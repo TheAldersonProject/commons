@@ -43,7 +43,16 @@ help:
 	@echo "  make build        : Build package"
 	@echo ""
 
-check:
+changelog-generate:
+	@echo ""
+	@echo "Generating changelog..."
+	uv tool run git-cliff -o -v  --github-repo TheAldersonProject/commons --github-token ${GITHUB-TOKEN-COMMONS}
+	@echo ""
+	@echo "... changelog generation finalized. check CHANGELOG.md!"
+
+check: clean format check-lint
+
+check-lint:
 	@echo ""
 	@echo "Starting ruff check..."
 	@echo ""
@@ -78,4 +87,24 @@ install: clean
 	@echo "...ending install dependencies!"
 	@echo ""
 
+install-uv-tools:
+	@echo ""
+	@echo "Install  UV tools..."
+	@echo ""
+	uv tool install black
+	uv tool install git-cliff
+	uv tool install ruff
+	@echo ""
+	@echo "...ending install uv tools!"
+	@echo ""
 
+install-all: install-uv-tools install
+
+test:
+	@echo ""
+	@echo "Running unit tests..."
+	@echo ""
+	uv run pytest -v -s --log-level=DEBUG --color=auto --code-highlight=yes --cov
+	@echo ""
+	@echo "...ending unit tests!"
+	@echo ""

@@ -1,8 +1,7 @@
 [project]
 name = "Commons"
 authors = [
-  { email = "thiago@thir.info" },
-  { name = "Thiago Dias" }
+    { name = "Thiago Dias", email = "thiago@thir.info" }
 ]
 version = "0.1.0"
 description = """This project is to share common functionalities between projects"""
@@ -24,10 +23,8 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-    "black>=25.1.0",
-    "git-changelog>=2.5.3",
-    "pyright>=1.1.403",
     "pytest>=8.4.1",
+    "pytest-cov>=6.2.1",
     "ruff>=0.12.4",
 ]
 
