@@ -47,6 +47,7 @@ class TestBasicLogger:
     def test_init_with_custom_log_level(self, mock_structlog):
         """Test initialization with custom log level."""
         mock_configure, _ = mock_structlog
+        logger = BasicLogger(log_level=LogLevel.ERROR)
 
         # Verify log level is set to ERROR
         call_args = mock_configure.call_args[1]
@@ -184,6 +185,8 @@ class TestBasicLogger:
         """Test that logging.basicConfig is called with correct parameters."""
         _, _ = mock_structlog
 
+        logger = BasicLogger(log_level=LogLevel.INFO)
+
         mock_basicconfig.assert_called_once_with(
             format="%(message)s",
             level=LogLevel.INFO.value,
@@ -195,6 +198,7 @@ class TestBasicLogger:
 
         # Test all log levels
         for level in LogLevel:
+            logger = BasicLogger(log_level=level)
             call_args = mock_configure.call_args[1]
             # Check that wrapper_class is the result of make_filtering_bound_logger
             assert "wrapper_class" in call_args
@@ -205,6 +209,8 @@ class TestBasicLogger:
     def test_json_renderer_used(self, mock_json_renderer, mock_structlog):
         """Test that JSONRenderer is used in the processors."""
         mock_configure, _ = mock_structlog
+
+        logger = BasicLogger()
 
         mock_json_renderer.assert_called_once()
         call_args = mock_configure.call_args[1]
