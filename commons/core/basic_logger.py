@@ -20,9 +20,7 @@ class LogLevel(Enum):
 class BasicLogger:
     """Basic logging class for logging in JSON format."""
 
-    def __init__(
-        self, log_level: LogLevel = LogLevel.DEBUG, logger_uuid: str = None
-    ) -> None:
+    def __init__(self, log_level: LogLevel = LogLevel.DEBUG, logger_uuid: str = None) -> None:
         logging.basicConfig(
             format="%(message)s",
             level=log_level.value,
