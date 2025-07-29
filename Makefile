@@ -10,11 +10,18 @@ endef
 PYTHON_VERSION := $(shell cat .python-version)
 
 # PROJECT
-CONFIG_FILE = ./pyproject.toml
-SOURCE_DIR 	= ./commons
-SCRIPTS_DIR = ./scripts
-TEST_DIR 	= ./tests
-DOCS_DIR 	= ./docs
+
+# Define or receive the project root folder
+PROJECT_ROOT= $(PWD)
+
+# Define or receive folders and config files of the project
+CONFIG_FILE 			= ${PROJECT_ROOT}/pyproject.toml
+DOCS_DIR 				= ${PROJECT_ROOT}/docs
+SCRIPTS_DIR 			= ${PROJECT_ROOT}/scripts
+SOURCE_DIR_FOLDER_NAME	= commons
+SOURCE_DIR 				= ${PROJECT_ROOT}/${SOURCE_DIR_FOLDER_NAME}
+TEST_DIR 				= ${PROJECT_ROOT}/tests
+VENV_DIR  				= ${PROJECT_ROOT}/.venv
 
 # TOOLS
 RUFF = uv tool run ruff --config $(CONFIG_FILE)
@@ -44,67 +51,113 @@ help:
 	@echo ""
 
 changelog-generate:
-	@echo ""
+	@make print-header
 	@echo "Generating changelog..."
-	uv tool run git-cliff -o -v  --github-repo TheAldersonProject/commons --github-token ${GITHUB-TOKEN-COMMONS}
+	uv tool run git-cliff -o -v  --github-repo TheAldersonProject/commons --github-token ${GITHUB_TOKEN_COMMONS}
 	@echo ""
 	@echo "... changelog generation finalized. check CHANGELOG.md!"
+	make print-footer
 
-check: clean format check-lint
+check: clean format lint
 
-check-lint:
-	@echo ""
-	@echo "Starting ruff check..."
-	@echo ""
-	${RUFF}  check ${SOURCE_DIR} ${SCRIPTS_DIR} ${TEST_DIR} ${DOCS_DIR}  ${RUFF_ARGS} --fix
-	@echo ""
-	@echo "...ending ruff check!"
-	@echo ""
-
+.ONESHELL:
 clean:
-	@echo ""
+	@make print-header
 	@echo "Cleaning project..."
+	@cd ${PROJECT_ROOT}
+	@echo "Working dir: $(PWD)"
 	find . -type d -name "__pycache__" -exec rm -rf {} +
 	find . -type f -name "*.pyc" -delete
 	rm -rf .pytest_cache build dist *.egg-info .coverage coverage.xml
+	@make print-footer
+
+.ONESHELL:
+dev-config:
+	@make print-header
+	@echo "Configuring environment..."
+	@echo "### Install UV"
+	@echo "### Install UV tools"
+	@make install-uv-tools
+	@echo "### Install Python"
+	@make install-python
+	@echo "### Configure virtual environment"
+	@uv venv .venv --allow-existing --trusted-host localhost --color auto --python python${PYTHON_VERSION}
+	@source .venv/bin/activate
+	@echo "Python version installed: $(python --version)"
+	@echo "### Install project dependencies"
+	@make install
 	@echo ""
+	@echo "...DEV environment configured!"
+	@make print-footer
 
 format:
-	@echo ""
+	@make print-header
 	@echo "Starting ruff check..."
 	@echo ""
 	${RUFF} format ${SOURCE_DIR} ${SCRIPTS_DIR} ${TEST_DIR} ${DOCS_DIR} ${RUFF_ARGS}
 	@echo ""
 	@echo "...ending ruff check!"
-	@echo ""
+	@make print-footer
 
 install: clean
-	@echo ""
+	@make print-header
 	@echo "Install dependencies using UV..."
 	@echo ""
-	uv sync --link-mode=copy
+	@uv sync --link-mode=copy
 	@echo ""
 	@echo "...ending install dependencies!"
-	@echo ""
-
-install-uv-tools:
-	@echo ""
-	@echo "Install  UV tools..."
-	@echo ""
-	uv tool install black
-	uv tool install git-cliff
-	uv tool install ruff
-	@echo ""
-	@echo "...ending install uv tools!"
-	@echo ""
+	@make print-footer
 
 install-all: install-uv-tools install
 
-test:
+install-python:
+	@uv python install python${PYTHON_VERSION}
+
+install-uv:
+	@make print-header
+	@echo "Installing UV..."
+	@curl -LsSf https://astral.sh/uv/install.sh | sh
+	@echo "...UV installed."
+	@make print-footer
+
+install-uv-tools:
+	@make print-header
+	@echo "Install  UV tools..."
 	@echo ""
+	@uv tool install black
+	@uv tool install git-cliff
+	@uv tool install ruff
+	@echo ""
+	@echo "...ending install uv tools!"
+	@make print-footer
+
+lint:
+	make print-header
+	@echo "Starting ruff check..."
+	@echo ""
+	@echo "SRC :: ${SOURCE_DIR}"
+	${RUFF} check ${SOURCE_DIR} ${SCRIPTS_DIR} ${TEST_DIR} ${DOCS_DIR}  ${RUFF_ARGS} -v --fix
+	@echo ""
+	@echo "...ending ruff check!"
+	make print-footer
+
+print-header:
+	@echo ""
+	@echo "Starting..."
+	@echo "------------------------------------------------------------------"
+	@echo ""
+
+print-footer:
+	@echo ""
+	@echo "... and done!"
+	@echo "=================================================================="
+	@echo ""
+
+test:
+	@make print-header
 	@echo "Running unit tests..."
 	@echo ""
-	uv run pytest -v -s --log-level=DEBUG --color=auto --code-highlight=yes --cov
+	@uv run pytest -v -s --log-level=DEBUG --color=auto --code-highlight=yes --cov --cov-report=xml
 	@echo ""
 	@echo "...ending unit tests!"
-	@echo ""
+	@make print-footer

@@ -380,4 +380,7 @@ pyrightconfig.json
 .history
 .ionide
 
+### My project files not trackable
+local-dev
+
 # End of https://www.toptal.com/developers/gitignore/api/python,visualstudiocode,pycharm,jetbrains

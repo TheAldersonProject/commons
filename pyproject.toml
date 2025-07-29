@@ -10,12 +10,15 @@ license = { file = "LICENSE" }
 classifiers = [
     "Programming Language :: Python",
     "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Intended Audience :: Developers",
 ]
-requires-python = ">=3.12"
+requires-python = ">=3.13"
 dependencies = [
+    "mkdocs-material>=9.6.16",
+    "mkdocstrings[python]>=0.30.0",
     "pydantic>=2.11.7",
+    "pymdown-extensions>=10.16.1",
     "rich>=14.0.0",
     "structlog>=25.4.0",
     "tomli>=2.2.1",
@@ -23,6 +26,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "mkdocs>=1.6.1",
     "pytest>=8.4.1",
     "pytest-cov>=6.2.1",
     "ruff>=0.12.4",
@@ -58,9 +62,10 @@ exclude = [
     "site-packages",
     "venv",
 ]
+fix-only = true
 
 # Same as Black.
-line-length = 100
+line-length = 120
 indent-width = 4
 
 # Assume Python 3.12
@@ -105,4 +110,4 @@ docstring-code-format = true
 #
 # This only has an effect when the `docstring-code-format` setting is
 # enabled.
-docstring-code-line-length = 20
+docstring-code-line-length = 60

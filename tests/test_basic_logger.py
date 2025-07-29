@@ -111,9 +111,7 @@ class TestBasicLogger:
         logger = BasicLogger(logger_uuid="test-uuid")
         logger.info("Test info message", extra_field="value")
 
-        mock_logger.info.assert_called_once_with(
-            "Test info message", extra_field="value", uuid="test-uuid"
-        )
+        mock_logger.info.assert_called_once_with("Test info message", extra_field="value", uuid="test-uuid")
 
     def test_debug_method(self, mock_structlog):
         """Test debug method."""
@@ -122,9 +120,7 @@ class TestBasicLogger:
         logger = BasicLogger(logger_uuid="test-uuid")
         logger.debug("Test debug message", extra_field="value")
 
-        mock_logger.debug.assert_called_once_with(
-            "Test debug message", extra_field="value", uuid="test-uuid"
-        )
+        mock_logger.debug.assert_called_once_with("Test debug message", extra_field="value", uuid="test-uuid")
 
     def test_warning_method(self, mock_structlog):
         """Test warning method."""
@@ -133,9 +129,7 @@ class TestBasicLogger:
         logger = BasicLogger(logger_uuid="test-uuid")
         logger.warning("Test warning message", extra_field="value")
 
-        mock_logger.warning.assert_called_once_with(
-            "Test warning message", extra_field="value", uuid="test-uuid"
-        )
+        mock_logger.warning.assert_called_once_with("Test warning message", extra_field="value", uuid="test-uuid")
 
     def test_error_method(self, mock_structlog):
         """Test error method."""
@@ -144,9 +138,7 @@ class TestBasicLogger:
         logger = BasicLogger(logger_uuid="test-uuid")
         logger.error("Test error message", extra_field="value")
 
-        mock_logger.error.assert_called_once_with(
-            "Test error message", extra_field="value", uuid="test-uuid"
-        )
+        mock_logger.error.assert_called_once_with("Test error message", extra_field="value", uuid="test-uuid")
 
     def test_critical_method(self, mock_structlog):
         """Test critical method."""
@@ -155,9 +147,7 @@ class TestBasicLogger:
         logger = BasicLogger(logger_uuid="test-uuid")
         logger.critical("Test critical message", extra_field="value")
 
-        mock_logger.critical.assert_called_once_with(
-            "Test critical message", extra_field="value", uuid="test-uuid"
-        )
+        mock_logger.critical.assert_called_once_with("Test critical message", extra_field="value", uuid="test-uuid")
 
     def test_log_methods_without_kwargs(self, mock_structlog):
         """Test all log methods without kwargs."""
@@ -176,9 +166,7 @@ class TestBasicLogger:
         mock_logger.debug.assert_called_once_with("Debug message", uuid="test-uuid")
         mock_logger.warning.assert_called_once_with("Warning message", uuid="test-uuid")
         mock_logger.error.assert_called_once_with("Error message", uuid="test-uuid")
-        mock_logger.critical.assert_called_once_with(
-            "Critical message", uuid="test-uuid"
-        )
+        mock_logger.critical.assert_called_once_with("Critical message", uuid="test-uuid")
 
     @patch("logging.basicConfig")
     def test_logging_basicconfig_called(self, mock_basicconfig, mock_structlog):
