@@ -65,7 +65,7 @@ class BasicLogger:
             logger_factory=structlog.PrintLoggerFactory(),
             cache_logger_on_first_use=False,
         )
-        
+
         self._uuid = logger_uuid or str(uuid.uuid4())
         self._log = structlog.get_logger()
 
