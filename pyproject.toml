@@ -21,6 +21,7 @@ dependencies = [
     "pymdown-extensions>=10.16.1",
     "rich>=14.0.0",
     "structlog>=25.4.0",
+    "taskipy>=1.14.1",
     "tomli>=2.2.1",
 ]
 
