@@ -9,11 +9,6 @@ from typing import Callable, Any
 import structlog
 
 
-def get_logger(log_level: LogLevel = LogLevel.DEBUG) -> "BasicLogger":
-    """Get logger with default parameters."""
-    return BasicLogger(log_level=log_level)
-
-
 class LogLevel(Enum):
     """Enum for logging levels.
 
@@ -30,6 +25,11 @@ class LogLevel(Enum):
     WARNING = logging.WARNING
     ERROR = logging.ERROR
     CRITICAL = logging.CRITICAL
+
+
+def get_logger(log_level: LogLevel = LogLevel.DEBUG) -> "BasicLogger":
+    """Get logger with default parameters."""
+    return BasicLogger(log_level=log_level)
 
 
 class BasicLogger:
