@@ -4,13 +4,14 @@ import logging
 import uuid
 from enum import Enum
 from functools import wraps
+from typing import Callable, Any
 
 import structlog
 
 
-def get_logger() -> "BasicLogger":
+def get_logger(log_level: LogLevel = LogLevel.DEBUG) -> "BasicLogger":
     """Get logger with default parameters."""
-    return BasicLogger(log_level=LogLevel.DEBUG)
+    return BasicLogger(log_level=log_level)
 
 
 class LogLevel(Enum):
@@ -70,7 +71,7 @@ class BasicLogger:
         self._log = structlog.get_logger()
 
     @staticmethod
-    def log(func):
+    def log(func: Callable[[str], Any]) -> Callable:
         """
         A static method that serves as a decorator to add custom logging behavior to a function.
 
