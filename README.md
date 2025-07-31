@@ -11,7 +11,7 @@ Contains basics for other projects
 
 ### Runtime libraries
 
-- Python version: `3.12`
+- Python version: `3.13`
 - Package management: [UV](https://docs.astral.sh/uv/)
 - Logs: [Structlog](https://www.structlog.org/)
 
